@@ -10,6 +10,4 @@ export distinguish_valley_from_spins
 
 include("species.jl")
 
-
-
 end
