@@ -1,5 +1,5 @@
 """
-Placeholder for a short summary about QNSectors.jl.
+A small package to define quantum number sectors for single-particle states.
 """
 module QNSectors
 
