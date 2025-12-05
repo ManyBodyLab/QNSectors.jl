@@ -1,0 +1,5 @@
+[deps]
+QNSectors = "8d65cbcf-bd1a-4eac-9fbf-652b498c346c"
+
+[compat]
+QNSectors = "0.1"
