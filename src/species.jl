@@ -13,7 +13,7 @@ Constructors:
 struct Species{N, T}
     labels::Vector{String}
     symmetry_group::Vector{Symbol}
-    values::Vector{NTuple{N, T}}
+    values::Vector{<:Tuple}
     tag_dict::Dict{String, Int}
     dict::Dict{Int, NTuple{N, T}}
     inv_dict::Dict{NTuple{N, T}, Int}
