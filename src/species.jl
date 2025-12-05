@@ -10,14 +10,14 @@ Constructors:
 - `Species(pairs)`: From `Vector{Pair{String,Tuple}}`.
 - `Species(; Sz=false, val=false)`: Convenience for spin/valley species.
 """
-struct Species{N, T}
+struct Species
     labels::Vector{String}
     symmetry_group::Vector{Symbol}
     values::Vector{<:Tuple}
     tags::Vector{String}
     tag_dict::Dict{String, Int}
-    dict::Dict{Int, NTuple{N, T}}
-    inv_dict::Dict{NTuple{N, T}, Int}
+    dict::Dict{Int, <:Tuple}
+    inv_dict::Dict{<:Tuple, Int}
 end
 
 function Base.:(==)(sp1::Species, sp2::Species)
@@ -60,23 +60,25 @@ function abelian_species(sp::Species)
     )
 end
 
-function Species(x::Vector{Pair{String, X}}, symmetry_group::Vector{Symbol} = fill(:U1, length(x))) where {X}
+function Species(x::Vector{Pair{String, X}}, symmetry_group::Vector{Symbol} = fill(:U1, length(x))) where {X <: Tuple}
     return Species(first.(x), last.(x), symmetry_group)
 end
-function Species(x::Vector{Pair{Symbol, X}}, symmetry_group::Vector{Symbol} = fill(:U1, length(x))) where {X}
+function Species(x::Vector{Pair{Symbol, X}}, symmetry_group::Vector{Symbol} = fill(:U1, length(x))) where {X <: Tuple}
     return Species(first.(x), last.(x), symmetry_group)
 end
-function Species(labels::Vector{Symbol}, values::Vector{X}, symmetry_group::Vector{Symbol} = fill(:U1, length(labels))) where {X}
+function Species(labels::Vector{Symbol}, values::Vector{X}, symmetry_group::Vector{Symbol} = fill(:U1, length(labels))) where {X <: Tuple}
     return Species(String.(labels), values, symmetry_group)
 end
-function Species(labels::Vector{String}, values::Vector{X}, symmetry_group::Vector{Symbol} = fill(:U1, length(labels))) where {X}
-    values = Tuple.(values)
+function Species(labels::Vector{String}, values::Vector{X}, symmetry_group::Vector{Symbol} = fill(:U1, length(labels))) where {X <: Tuple}
     if isempty(labels) && isempty(values)
         return Species(
             [""], [:U1], [tuple(0)], [""], Dict("" => 1), Dict(1 => tuple(0)), Dict(tuple(0) => 1)
         )
     end
-    @assert length(labels) == length(values) == length(symmetry_group)
+    @assert all(x -> isa(x, NTuple{N, Int} where {N}), values) "The values of the species must be integer!\n Here they are $(eltype.(values))"
+    @assert length(labels) == length(values) "The number of labels must match the number of values!\n Here they are $(length(labels)) and $(length(values))"
+    @assert length(labels) == length(symmetry_group) "The number of labels must match the number of symmetry groups!\n Here they are $(length(labels)) and $(length(symmetry_group))"
+
 
     tags = Vector{String}(undef, prod(length(values[i]) for i in eachindex(values); init = 1))
     counter = 1
