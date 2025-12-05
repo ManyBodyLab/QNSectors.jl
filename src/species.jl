@@ -90,6 +90,9 @@ function Species(labels::Vector{String}, values::Vector{X}, symmetry_group::Vect
     dict = Dict(zip(1:length(tags), Iterators.product(values...)))
     tag_dict = Dict(zip(tags, 1:length(tags)))
     inv_dict = Dict(zip(Iterators.product(values...), 1:length(tags)))
+    @show typeof(inv_dict)
+    @show typeof(dict)
+    @show typeof(tag_dict)
     return Species(labels, symmetry_group, values, tags, tag_dict, dict, inv_dict)
 end
 
