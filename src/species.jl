@@ -144,3 +144,5 @@ function distinguish_valley_from_spins(specie::Species)::Tuple{Vector{Int64}, Di
     end
     return allvalleys, whichvalleys
 end
+standard_spin_label() = "sz"
+standard_valley_label() = "eta"
