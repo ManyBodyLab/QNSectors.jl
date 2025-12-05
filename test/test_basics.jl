@@ -1,7 +1,7 @@
 using QNSectors
 using Test
 using HDF5
-using QNSectors: symmetry_groups, labels, tags, standard_spin_label, standard_valley_label
+using QNSectors: symmetry_groups, labels, tags, standard_spin_label, standard_valley_label, species_values
 
 @testset "QNSectors" begin
     @testset "Species" begin
