@@ -1,5 +1,6 @@
 using QNSectors
 using Test
+using HDF5
 
 @testset "QNSectors" begin
     @testset "Species" begin
